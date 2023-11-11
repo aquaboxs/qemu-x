@@ -7,19 +7,14 @@ jobs:
     runs-on: windows-latest
     strategy:
       matrix:
-        configuration: ["Debug", "Release"]
+        include:
+        - configuration: Debug
+          build_param: --debug
+          artifact_name: qemux-win-debug
+        - configuration: Release
+          build_param:
+          artifact_name: qemux-win-release
     steps:
-    - name: Define Build Options
-      shell: python
-      run: |
-        if "${{ matrix.configuration }}" == "Debug":
-          print('Configuring for Debug')
-          print('::set-env name=BUILD_PARAM::')
-          print('::set-env name=ARTIFACT_NAME::xqemu-debug')
-        else:
-          print('Configuring for Release')
-          print('::set-env name=BUILD_PARAM::--release')
-          print('::set-env name=ARTIFACT_NAME::xqemu-release')
     - name: Clone Tree
       uses: actions/checkout@v1
       with:

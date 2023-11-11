@@ -5,9 +5,9 @@ set -o pipefail # Will return the exit status of make if it fails
 
 package_windows() { # Script to prepare the windows exe
     mkdir -p dist
-    cp i386-softmmu/qemu-system-i386.exe dist/xqemu.exe
-    cp i386-softmmu/qemu-system-i386w.exe dist/xqemuw.exe
-    python3 ./get_deps.py dist/qemu3dfx.exe dist
+    cp i386-softmmu/qemu-system-i386.exe dist/qemux.exe
+    cp i386-softmmu/qemu-system-i386w.exe dist/qemuxw.exe
+    python3 ./get_deps.py dist/qemux.exe dist
 }
 
 postbuild=''
@@ -78,9 +78,9 @@ set -x # Print commands from now on
     --extra-cflags="-DXBOX=1 ${build_cflags} ${sys_cflags} ${CFLAGS}" \
     ${debug_opts} \
     ${sys_opts} \
-    --target-list=x86_64-softmmu \
+    --target-list=i386-softmmu \
     ${user_opts}
 
-time make -j"${job_count}" subdir-x86_64-softmmu 2>&1 | tee build.log
+time make -j"${job_count}" subdir-i386-softmmu 2>&1 | tee build.log
 
 ${postbuild} # call post build functions
